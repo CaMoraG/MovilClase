@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PrimeraAppJEGT</string>
+    <string name="nombre">Camilo Mora</string>
+    <string name="universidad">Pontificia Universidad Javeriana!</string>
+    <string-array name="string_array">
+        <item>String 1</item>
+        <item>String 2</item>
+        <item>String 3</item>
+    </string-array>
+</resources>

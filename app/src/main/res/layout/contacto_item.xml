@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/contactoImageView"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="0.25"
+        android:gravity="center"
+        android:src="@drawable/_42902_200"
+        app:srcCompat="@drawable/_42902_200"></ImageView>
+    <TextView
+        android:id="@+id/idContactoTextView"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="0.25"
+        android:text=""
+        android:gravity="center|left">
+    </TextView>
+    <TextView
+        android:id="@+id/nombreContactoTextView"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="0.5"
+        android:text=""
+        android:gravity="center|left">
+    </TextView>
+</LinearLayout>
