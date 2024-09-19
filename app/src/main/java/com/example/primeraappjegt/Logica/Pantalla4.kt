@@ -1,5 +1,6 @@
 package com.example.primeraappjegt.Logica
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -24,7 +25,9 @@ class Pantalla4 : AppCompatActivity() {
         binding.Titulo.text = "Pantalla 4 con binding"
 
         binding.button1.setOnClickListener {
-            Toast.makeText(this, "Boton 1", Toast.LENGTH_SHORT).show()
+            Intent(this, ResultadosGPS::class.java).also {
+                startActivity(it)
+            }
         }
     }
 }

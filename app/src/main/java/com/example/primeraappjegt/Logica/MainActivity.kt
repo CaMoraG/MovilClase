@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, PermisosEjemplo::class.java)
+        val intent = Intent(this, Pantalla4::class.java)
 
         //identificacion de objetos por codigo
         val nombre:TextView = findViewById(R.id.textNombre)
