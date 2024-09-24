@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".Logica.ResultadosGPS">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Latitud: "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/localizacionTitulo" />
 
     <TextView
         android:id="@+id/longitudTitulo"
@@ -27,6 +28,7 @@
         android:id="@+id/elevacionTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
         android:text="Elevación: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/longitudTitulo" />
@@ -36,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/latitudTitulo"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/localizacionTitulo" />
 
     <TextView
         android:id="@+id/longitud"
@@ -51,4 +53,46 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/elevacionTitulo"
         app:layout_constraintTop_toTopOf="@+id/elevacionTitulo" />
+
+    <TextView
+        android:id="@+id/distanciaTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distancia al Dorado: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/elevacionTitulo" />
+
+    <TextView
+        android:id="@+id/distancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/distanciaTitulo"
+        app:layout_constraintTop_toBottomOf="@+id/elevacionTitulo" />
+
+    <TextView
+        android:id="@+id/localizacionTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Localización"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ubicacionesTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="Ubicaciones guardadas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distanciaTitulo" />
+
+    <ListView
+        android:id="@+id/ubicacionesGuardadas"
+        android:layout_width="409dp"
+        android:layout_height="572dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ubicacionesTitulo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

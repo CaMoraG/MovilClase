@@ -3,7 +3,10 @@ package com.example.primeraappjegt.Logica
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.IntentSenderRequest
@@ -16,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.primeraappjegt.Datos.Datos
 import com.example.primeraappjegt.R
 import com.example.primeraappjegt.databinding.ActivityResultadosGpsBinding
+import com.example.primeraappjegt.modelo.MyLocation
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.ResolvableApiException
@@ -29,12 +33,21 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.Priority
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import org.json.JSONArray
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.Writer
+import java.util.Date
+import kotlin.math.roundToInt
 
 class ResultadosGPS : AppCompatActivity() {
     private lateinit var binding: ActivityResultadosGpsBinding
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationRequest: LocationRequest
     private lateinit var mLocationCallback: LocationCallback
+    var localizaciones: JSONArray = JSONArray()
+    val filename = "locations.json"
 
     private val getLocationSettings = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
@@ -74,9 +87,25 @@ class ResultadosGPS : AppCompatActivity() {
                     binding.latitud.text = location.latitude.toString()
                     binding.longitud.text = location.longitude.toString()
                     binding.elevacion.text = location.altitude.toString()
+                    binding.distancia.text = distance(location.latitude, location.longitude, 4.700866, -74.146038).toString()
+                    writeJSONObject(location)
+                    updateLocalizacionesGuardadas()
                 }
             }
         }
+    }
+
+    private fun updateLocalizacionesGuardadas(){
+        val localizacionesGuardadas = binding.ubicacionesGuardadas
+        val jsonArray = readJSONArrayFromFile(filename)
+        val list = ArrayList<String>()
+        for (i in 0 until jsonArray.length()) {
+            val item = jsonArray.getJSONObject(i)
+            val location = "Latitud: ${item.getDouble("latitud")}, Longitud: ${item.getDouble("longitud")}, Fecha: ${item.getString("date")}"
+            list.add(location)
+        }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+        localizacionesGuardadas.adapter = adapter
     }
 
     private fun setResultadosGPS(){
@@ -91,6 +120,7 @@ class ResultadosGPS : AppCompatActivity() {
                         binding.latitud.text = location.latitude.toString()
                         binding.longitud.text = location.longitude.toString()
                         binding.elevacion.text = location.altitude.toString()
+                        binding.distancia.text = distance(location.latitude, location.longitude, 4.700866, -74.146038).toString()
                     }
                 }
         }
@@ -161,5 +191,62 @@ class ResultadosGPS : AppCompatActivity() {
 
             }
         }
+    }
+
+    fun distance(lat1: Double, long1: Double, lat2: Double, long2: Double): Double {
+        val latDistance = Math.toRadians(lat1 - lat2)
+        val lngDistance = Math.toRadians(long1 - long2)
+        val a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2))
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        val RADIUS_OF_EARTH_KM = 6371
+        val result = RADIUS_OF_EARTH_KM * c
+        return (result * 100.0).roundToInt() / 100.0
+    }
+
+    private fun writeJSONObject(location: Location) {
+        localizaciones.put(
+            MyLocation(
+            Date(System.currentTimeMillis()), location.latitude,
+            location.longitude).toJSON())
+        var output: Writer?
+
+        try {
+            val file = File(baseContext.getExternalFilesDir(null), filename)
+            Log.i("LOCATION", "Ubicacion de archivo: $file")
+            output = BufferedWriter(FileWriter(file))
+            output.write(localizaciones.toString())
+            output.close()
+            Toast.makeText(applicationContext, "Location saved", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+//Log error
+        }
+    }
+
+    private fun readJSONArrayFromFile(fileName: String): JSONArray {
+        val file = File(baseContext.getExternalFilesDir(null), fileName)
+        if (!file.exists()) {
+            Log.i("LOCATION", "Ubicacion de archivo: $file no encontrado")
+            return JSONArray()
+        }
+        val jsonString = file.readText()
+        return JSONArray(jsonString)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        if (mFusedLocationClient!=null){
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 }

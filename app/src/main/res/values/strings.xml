@@ -7,4 +7,5 @@
         <item>String 2</item>
         <item>String 3</item>
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
