@@ -25,7 +25,7 @@ class Pantalla4 : AppCompatActivity() {
         binding.Titulo.text = "Pantalla 4 con binding"
 
         binding.button1.setOnClickListener {
-            Intent(this, ResultadosGPS::class.java).also {
+            Intent(this, OSMMap::class.java).also {
                 startActivity(it)
             }
         }
